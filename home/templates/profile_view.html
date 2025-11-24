@@ -1,0 +1,75 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Profile View
+{% endblock %}
+
+{% block content %}
+
+{% if  form.instance.pk %}
+    <a class="btn btn-primary mb-2 mt-4" href="{% url 'profile_create' %}">
+        Add New Profile
+    </a>
+{% else %}
+    <div class="container py-4">
+        
+        <div class="card shadow-lg border-0 rounded-4 p-4" style="max-width: 600px; margin:auto;">
+            {% if profile %}
+            <h2 class="text-center mb-4 fw-bold">Profile Details</h2>
+
+            <!-- Name + Age -->
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <p class="mb-1 text-muted fw-semibold">Name</p>
+                    <p class="fs-5">{{ profile.user.username }}</p>
+                </div>
+                <div class="col-md-6">
+                    <p class="mb-1 text-muted fw-semibold">Age</p>
+                    <p class="fs-5">{{ profile.age }}</p>
+                </div>
+            </div>
+
+            <!-- Height + Weight -->
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <p class="mb-1 text-muted fw-semibold">Height (cm)</p>
+                    <p class="fs-5">{{ profile.height }}</p>
+                </div>
+                <div class="col-md-6">
+                    <p class="mb-1 text-muted fw-semibold">Weight (kg)</p>
+                    <p class="fs-5">{{ profile.weight }}</p>
+                </div>
+            </div>
+
+            <!-- Gender + Activity Level -->
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <p class="mb-1 text-muted fw-semibold">Gender</p>
+                    <p class="fs-5">{{ profile.gender }}</p>
+                </div>
+                <div class="col-md-6">
+                    <p class="mb-1 text-muted fw-semibold">Activity Level</p>
+                    <p class="fs-5">{{ profile.activity_level }}</p>
+                </div>
+            </div>
+
+            {% if profile.user == user %}
+            <div class="text-center mt-4 justify-content-center gap-5 d-flex">
+                <a href="{% url 'profile_edit' %}" class="btn btn-primary px-4 py-2 shadow-sm">
+                    Edit Profile
+                </a>
+                <a href="{% url 'profile_delete' %}" class="btn btn-danger px-4 py-2 shadow-sm">
+                    Delete Profile
+                </a>
+            </div>
+            {% endif %}
+            {% else %}
+            <p class="fs-4 text-light">No Profile</p>
+            <a class="btn btn-primary mb-2 mt-4" href="{% url 'profile_create' %}">
+                Add New Profile
+            </a>
+            {% endif %}
+        </div>
+    </div>
+{% endif %}
+{% endblock %}

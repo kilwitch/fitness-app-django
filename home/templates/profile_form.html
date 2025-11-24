@@ -1,0 +1,62 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Profile Form
+{% endblock %}
+
+{% block content %}
+
+    {% if form.instance.pk %}
+        <h2 class="mt-4 mb-4 text-light">Edit Profile</h2>
+    {% else %}
+        <h2 class="mt-4 mb-4 text-light">Create New Profile</h2>
+    {% endif %}
+
+    {% load widget_tweaks %}
+
+    <form method="post" class="mb-4 bg-dark p-4 rounded shadow">
+        {% csrf_token %}
+
+        <!-- Name -->
+        
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <p class="mb-1 text-muted fw-semibold">Name</p>
+                <p class="fs-5">{{ request.user.username }}</p>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label class="form-label text-white">Age</label>
+                {{ form.age|add_class:"form-control bg-secondary text-white border-0" }}
+            </div>
+        </div>
+
+        <!-- weight + height in one row -->
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label class="form-label text-white">Height</label>
+                {{ form.height|add_class:"form-control bg-secondary text-white border-0" }}
+            </div>
+            <div class="col-md-6 mb-3">
+                <label class="form-label text-white">Weight</label>
+                {{ form.weight|add_class:"form-control bg-secondary text-white border-0" }}
+            </div>
+        </div>
+
+        <!-- activity + Gender in one row -->
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label class="form-label text-white">Activity Level</label>
+                {{ form.activity_level|add_class:"form-control bg-secondary text-white border-0" }}
+            </div>
+            <div class="col-md-6 mb-3">
+                <label class="form-label text-white">Sex</label>
+                {{ form.gender|add_class:"form-control bg-secondary text-white border-0" }}
+            </div>
+        </div>
+
+
+        <button type="submit" class="btn btn-success w-100 mt-3">Save</button>
+        <a href="{% url 'profile_view' %}" class="btn btn-secondary w-100 mt-2">Cancel</a>
+    </form>
+
+{% endblock %}

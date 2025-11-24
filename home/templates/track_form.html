@@ -1,0 +1,55 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Track Form
+{% endblock %}
+
+{% block content %}
+
+    {% if form.instance.pk %}
+        <h2 class="mt-4 mb-4 text-light">Edit Track</h2>
+    {% else %}
+        <h2 class="mt-4 mb-4 text-light">Create New Track</h2>
+    {% endif %}
+
+    {% load widget_tweaks %}
+
+    <form method="post" class="mb-4 bg-dark p-4 rounded shadow">
+        {% csrf_token %}
+
+        <!-- Name -->
+        <div class="mb-3">
+            <label class="form-label text-white">Name</label>
+            {{ form.name|add_class:"form-control bg-secondary text-white border-0" }}
+        </div>
+
+        <!-- Sets + Reps in one row -->
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label class="form-label text-white">Sets</label>
+                {{ form.sets|add_class:"form-control bg-secondary text-white border-0" }}
+            </div>
+            <div class="col-md-6 mb-3">
+                <label class="form-label text-white">Reps</label>
+                {{ form.reps|add_class:"form-control bg-secondary text-white border-0" }}
+            </div>
+        </div>
+
+        <!-- Weight + muscle in one row -->
+         <div class="row">
+            <div class="col-md-6 mb-3">
+                <label class="form-label text-white">Weight</label>
+                {{ form.weight|add_class:"form-control bg-secondary text-white border-0" }}
+            </div>
+            <div class="col-md-6 mb-3">
+                <label class="form-label text-white">Muscle</label>
+                {{ form.muscle_group|add_class:"form-control bg-secondary text-white border-0" }}
+            </div>
+        </div>
+       
+
+        <button type="submit" class="btn btn-success w-100 mt-3">Save</button>
+        <a href="{% url 'track_list' %}" class="btn btn-secondary w-100 mt-2">Cancel</a>
+    </form>
+
+{% endblock %}

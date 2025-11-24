@@ -1,0 +1,138 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<!-- DARK MODE STYLING -->
+<style>
+    body {
+        background: #0d1117 !important;
+        color: #e6edf3 !important;
+    }
+
+    .chart-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 20px;
+        margin-top: 30px;
+    }
+
+    .chart-card {
+        background: #161b22;
+        padding: 22px;
+        border-radius: 18px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+        transition: 0.2s ease;
+        border: 1px solid #21262d;
+    }
+
+    .chart-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 24px rgba(0,0,0,0.55);
+    }
+
+    h2, h4 {
+        color: #e6edf3 !important;
+        font-weight: 600;
+        text-align: center;
+    }
+</style>
+
+<div class="container mt-4">
+   
+
+    <div class="chart-row">
+
+        <!-- Scatter Plot -->
+        <div class="chart-card">
+            <h4>Days Tracked vs Weight</h4>
+            <canvas id="scatterChart"></canvas>
+        </div>
+
+        <!-- Radar Chart -->
+        <div class="chart-card">
+            <h4>Muscle Group Focus</h4>
+            <canvas id="radarChart"></canvas>
+        </div>
+
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    // Data passed from Django
+    const scatterData = {{ scatter|safe }};
+    const muscleLabels = {{ muscle_labels|safe }};
+    const muscleCounts = {{ muscle_counts|safe }};
+
+    // -------------------- DARK MODE COLORS --------------------
+    const darkText = "#e6edf3";
+    const darkGrid = "#30363d";
+    const lineColor = "#58a6ff";
+    const radarColor = "rgba(88,166,255,0.35)";
+
+    // -------------------- SCATTER PLOT --------------------
+    new Chart(document.getElementById("scatterChart"), {
+        type: "scatter",
+        data: {
+            datasets: [{
+                label: "Weight (kg)",
+                data: scatterData,
+                borderColor: lineColor,
+                backgroundColor: lineColor,
+                pointRadius: 5,
+                pointHoverRadius: 7,
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                x: {
+                    grid: { color: darkGrid },
+                    ticks: { color: darkText },
+                    title: { display: true, text: "Days Tracked", color: darkText }
+                },
+                y: {
+                    grid: { color: darkGrid },
+                    ticks: { color: darkText },
+                    title: { display: true, text: "Weight (kg)", color: darkText }
+                }
+            },
+            plugins: {
+                legend: { labels: { color: darkText } }
+            }
+        }
+    });
+
+    // -------------------- RADAR CHART --------------------
+    new Chart(document.getElementById("radarChart"), {
+        type: "radar",
+        data: {
+            labels: muscleLabels,
+            datasets: [{
+                label: "Muscle Groups",
+                data: muscleCounts,
+                fill: true,
+                backgroundColor: radarColor,
+                borderColor: lineColor,
+                pointBackgroundColor: lineColor,
+                borderWidth: 2,
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                r: {
+                    angleLines: { color: darkGrid },
+                    grid: { color: darkGrid },
+                    pointLabels: { color: darkText },
+                    ticks: { color: darkText, backdropColor: "transparent" }
+                }
+            },
+            plugins: {
+                legend: { labels: { color: darkText } }
+            }
+        }
+    });
+</script>
+
+{% endblock %}

@@ -1,0 +1,101 @@
+{% extends "layout.html" %}
+{% load static %}
+{% block title %}Chatbot-Fitness AI{% endblock %}
+
+{% block content %}
+
+<style>
+    /* Smooth dark mode theme */
+    .chat-dark-bg {
+        background: #1e1f22 !important;
+        color: #ffffff !important;
+    }
+
+    .chat-ai-bubble {
+        background: #2a2b2f !important;
+        color: #e4e4e4 !important;
+        border: 1px solid #3a3b3f;
+    }
+
+    .chat-user-bubble {
+        background: #0d6efd !important;
+        color: #ffffff !important;
+    }
+
+    .chat-input-dark {
+        background: #2a2b2f !important;
+        border: 1px solid #3a3b3f !important;
+        color: white !important;
+    }
+
+    .chat-input-dark::placeholder {
+        color: #9ea0a5 !important;
+    }
+
+    .chat-send-btn {
+        border-radius: 0 0.5rem 0.5rem 0 !important;
+    }
+</style>
+
+<div class="card shadow-lg rounded-4 border-0 mt-4 chat-dark-bg">
+    <div class="card-header rounded-top-4" style="background:#0d6efd; color:white;">
+        <h5 class="mb-0">💬 Fitness AI Chatbot</h5>
+    </div>
+
+    <div id="chat-box" class="card-body chat-dark-bg"
+         style="height:450px; overflow-y:auto;">
+    </div>
+
+    <div class="card-footer chat-dark-bg rounded-bottom-4">
+        <div class="input-group">
+            <input id="user-input"
+                   class="form-control chat-input-dark"
+                   type="text"
+                   placeholder="Ask something about workouts, diet, or fitness..."
+                   onkeydown="if(event.key === 'Enter') sendMessage();">
+
+            <button class="btn btn-primary chat-send-btn" onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+<script>
+function appendMessage(sender, text, cssClass) {
+    const box = document.getElementById("chat-box");
+    const bubble = `
+        <div class="d-flex mb-2 ${cssClass}">
+            <div class="p-2 rounded-3 ${sender === "You" ? "chat-user-bubble" : "chat-ai-bubble"}" 
+                 style="max-width: 75%;">
+                <strong>${sender}</strong><br>${marked.parse(text)}
+            </div>
+        </div>
+    `;
+    box.innerHTML += bubble;
+    box.scrollTop = box.scrollHeight;
+}
+
+
+function sendMessage() {
+    const input = document.getElementById("user-input");
+    const message = input.value.trim();
+    if (message === "") return;
+
+    appendMessage("You", message, "justify-content-end");
+
+    fetch("/home/api/chat/", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({ message: message })
+    })
+    .then(response => response.json())
+    .then(data => {
+        appendMessage("AI", data.reply, "justify-content-start");
+    });
+
+    input.value = "";
+}
+</script>
+
+{% endblock %}

@@ -1,0 +1,51 @@
+<<<<<<< HEAD
+*.pyc
+__pycache__/
+.env
+.venv/
+db.sqlite3
+media/
+=======
+# Python
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.sqlite3
+
+# Virtual environment
+venv/
+.venv/
+env/
+ENV/
+
+# Django stuff
+media/
+staticfiles/
+static/
+*.log
+
+# Environment variables
+.env
+*.env
+
+# VS Code
+.vscode/
+
+# Mac / Windows
+.DS_Store
+Thumbs.db
+
+# Cache
+*.cache
+.cache/
+pip-wheel-metadata/
+
+# Node (if you use any frontend tools)
+node_modules/
+
+# Migrations (optional – if you want)
+# ** Uncomment this if you don’t want migrations in Git **
+# */migrations/
+# !*/migrations/__init__.py
+>>>>>>> ac5f3e513fff53f36acf2ed62938ab505e627600
